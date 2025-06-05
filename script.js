@@ -16,68 +16,16 @@ sr.reveal('.qr-section', { delay: 400 });
 sr.reveal('.feedback-section', { delay: 500 });
 sr.reveal('.footer', { delay: 600 });
 
-// Three.js Setup
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({
-    alpha: true,
-    antialias: true
-});
-
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.getElementById('particles-container').appendChild(renderer.domElement);
-
-// Partículas
-const particlesGeometry = new THREE.BufferGeometry();
-const particlesCount = 1000;
-const posArray = new Float32Array(particlesCount * 3);
-
-for(let i = 0; i < particlesCount * 3; i++) {
-    posArray[i] = (Math.random() - 0.5) * 10;
-}
-
-particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-const particlesMaterial = new THREE.PointsMaterial({
-    size: 0.005,
-    color: 0xffffff,
-    transparent: true,
-    opacity: 0.6,
-    blending: THREE.AdditiveBlending
-});
-
-const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-scene.add(particlesMesh);
-
-camera.position.z = 5;
-
-// Animación de partículas
-const clock = new THREE.Clock();
-
-const animate = () => {
-    requestAnimationFrame(animate);
-    const elapsedTime = clock.getElapsedTime();
-
-    particlesMesh.rotation.y = elapsedTime * 0.05;
-    particlesMesh.rotation.x = elapsedTime * 0.03;
-
-    renderer.render(scene, camera);
-};
-
-animate();
-
-// Cursor personalizado
+// Optimized cursor
 const cursor = document.querySelector('.custom-cursor');
-const desktopCursor = document.querySelector('.desktop-cursor');
 let cursorVisible = true;
 let cursorTimeout;
 
 const updateCursor = (e) => {
-    if (window.innerWidth > 768) {
-        cursor.style.transform = `translate(${e.clientX - 40}px, ${e.clientY - 40}px)`;
-    }
+    cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
 };
 
+// Throttled mousemove event
 document.addEventListener('mousemove', (e) => {
     if (!cursorVisible) {
         cursor.style.opacity = '1';
@@ -93,67 +41,56 @@ document.addEventListener('mousemove', (e) => {
     }, 3000);
 });
 
-// Efecto de texto 3D
-const contentWrappers = document.querySelectorAll('.content-wrapper');
+// Control de slides optimizado
+const slides = document.querySelectorAll('.slide');
+let currentSlide = 0;
+const totalSlides = slides.length;
+let isScrolling = false;
 
-document.addEventListener('mousemove', (e) => {
-    const mouseX = (e.clientX / window.innerWidth) - 0.5;
-    const mouseY = (e.clientY / window.innerHeight) - 0.5;
-
-    contentWrappers.forEach(wrapper => {
-        wrapper.style.transform = `rotateY(${mouseX * 20}deg) rotateX(${-mouseY * 20}deg)`;
-    });
-});
-
-// Navegación y scroll
-const sections = document.querySelectorAll('.section');
-const navLinks = document.querySelectorAll('.main-nav a');
-
-const observerOptions = {
-    root: null,
-    threshold: 0.5,
-    rootMargin: "0px"
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            // Actualizar navegación
-            navLinks.forEach(link => {
-                if (link.getAttribute('href').slice(1) === entry.target.id) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
+const showSlide = (index) => {
+    slides.forEach((slide, i) => {
+        if (i === index) {
+            slide.classList.add('active');
+            gsap.to(slide, {
+                opacity: 1,
+                y: 0,
+                duration: 0.7,
+                ease: 'power2.out'
             });
-            
-            // Activar sección
-            entry.target.classList.add('active');
         } else {
-            entry.target.classList.remove('active');
+            slide.classList.remove('active');
+            gsap.to(slide, {
+                opacity: 0,
+                y: 50,
+                duration: 0.5,
+                ease: 'power2.in'
+            });
         }
     });
-}, observerOptions);
+};
 
-sections.forEach(section => observer.observe(section));
+// Inicializar primer slide
+showSlide(0);
 
-// Soporte para dispositivos móviles
-window.addEventListener('deviceorientation', (e) => {
-    if (window.innerWidth <= 768) {
-        const tiltX = (e.beta - 45) / 90;  // -1 to 1
-        const tiltY = e.gamma / 90;  // -1 to 1
-
-        contentWrappers.forEach(wrapper => {
-            wrapper.style.transform = `rotateX(${tiltX * 10}deg) rotateY(${tiltY * 10}deg)`;
-        });
+// Optimized scroll handler with debounce
+let scrollTimeout;
+window.addEventListener('wheel', (e) => {
+    if (!isScrolling) {
+        isScrolling = true;
+        clearTimeout(scrollTimeout);
+        
+        if (e.deltaY > 0) {
+            currentSlide = (currentSlide + 1) % totalSlides;
+        } else {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        }
+        
+        showSlide(currentSlide);
+        
+        scrollTimeout = setTimeout(() => {
+            isScrolling = false;
+        }, 700);
     }
-});
-
-// Manejar redimensionamiento
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
 // Simple title animation
@@ -173,6 +110,124 @@ window.addEventListener('resize', () => {
         // Update any necessary responsive adjustments here
     }, 250);
 });
+
+// Three.js Setup for enhanced particles
+const canvasContainer = document.getElementById('particles-canvas');
+const renderer = new THREE.WebGLRenderer({ alpha: true });
+renderer.setClearColor(0x000000, 0);
+renderer.setSize(window.innerWidth, window.innerHeight);
+canvasContainer.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 7;
+
+const particlesCount = 1200;
+const geometry = new THREE.BufferGeometry();
+const positions = new Float32Array(particlesCount * 3);
+for (let i = 0; i < particlesCount * 3; i++) {
+    positions[i] = (Math.random() - 0.5) * 16;
+}
+geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+const material = new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 0.08,
+    opacity: 0.7,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+});
+const points = new THREE.Points(geometry, material);
+scene.add(points);
+
+function animateParticles() {
+    requestAnimationFrame(animateParticles);
+    points.rotation.y += 0.0008;
+    points.rotation.x += 0.0003;
+    renderer.render(scene, camera);
+}
+animateParticles();
+
+window.addEventListener('resize', () => {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+});
+
+// --- TEXTOS SIGUEN EL MOUSE ---
+const sectionTitles = document.querySelectorAll('.section-content');
+let mouseX = 0, mouseY = 0;
+let targetX = 0, targetY = 0;
+
+function handleMouseMove(e) {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+}
+
+document.addEventListener('mousemove', handleMouseMove);
+
+function animateTextTilt() {
+    targetX += (mouseX - targetX) * 0.08;
+    targetY += (mouseY - targetY) * 0.08;
+    sectionTitles.forEach(el => {
+        el.style.transform = `rotateY(${-targetX * 10}deg) rotateX(${targetY * 8}deg)`;
+    });
+    requestAnimationFrame(animateTextTilt);
+}
+animateTextTilt();
+
+// --- SCROLL Y SECCIONES ---
+const sections = document.querySelectorAll('.section');
+const navDots = document.querySelectorAll('.nav-dot');
+let currentSection = 0;
+
+function showSection(idx) {
+    sections.forEach((sec, i) => {
+        sec.classList.toggle('active', i === idx);
+    });
+    navDots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === idx);
+    });
+    currentSection = idx;
+}
+
+function scrollToSection(dir) {
+    if (isScrolling) return;
+    isScrolling = true;
+    let next = currentSection + dir;
+    if (next < 0) next = 0;
+    if (next >= sections.length) next = sections.length - 1;
+    if (next !== currentSection) showSection(next);
+    setTimeout(() => { isScrolling = false; }, 900);
+}
+
+window.addEventListener('wheel', (e) => {
+    if (window.innerWidth < 600) return; // No scroll en móvil
+    if (e.deltaY > 0) scrollToSection(1);
+    else if (e.deltaY < 0) scrollToSection(-1);
+});
+
+navDots.forEach((dot, i) => {
+    dot.addEventListener('click', () => showSection(i));
+});
+
+// --- FLECHA MÓVIL ---
+const mobileArrow = document.getElementById('mobileArrow');
+function handleMobileArrow() {
+    if (window.innerWidth < 600) {
+        mobileArrow.style.display = 'block';
+    } else {
+        mobileArrow.style.display = 'none';
+    }
+}
+window.addEventListener('resize', handleMobileArrow);
+handleMobileArrow();
+
+// --- OCULTAR CURSOR EN MÓVIL ---
+if (window.innerWidth < 600) {
+    document.body.style.cursor = 'default';
+}
 
 // Glitch effect timing
 setInterval(() => {

@@ -3,90 +3,77 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Cuenta de Cobro - Tuto</title>
+    <title>Cuenta de Cobro - TUTO</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
 <body>
-    <!-- Borde del viewport -->
+    <!-- Video de fondo -->
+    <div class="video-bg">
+        <video autoplay muted loop playsinline id="bgVideo">
+            <source src="assets/video/background.mp4" type="video/mp4">
+            Tu navegador no soporta videos HTML5.
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <!-- Contenedor de partículas (Three.js) -->
+    <div id="particles-canvas"></div>
+
+    <!-- Borde grueso -->
     <div class="viewport-border"></div>
 
-    <!-- Video de fondo -->
-    <video autoplay muted loop playsinline id="bgVideo">
-        <source src="assets/video/background.mp4" type="video/mp4">
-    </video>
-
-    <!-- Partículas Three.js -->
-    <div id="particles-container"></div>
-
-    <!-- Navegación -->
-    <nav class="main-nav">
+    <!-- Navbar -->
+    <nav class="navbar">
         <ul>
-            <li><a href="#inicio" class="active">Inicio</a></li>
-            <li><a href="#servicio">Servicio</a></li>
-            <li><a href="#nosotros">Nosotros</a></li>
+            <li class="nav-dot active" data-section="section1"></li>
+            <li class="nav-dot" data-section="section2"></li>
+            <li class="nav-dot" data-section="section3"></li>
         </ul>
     </nav>
 
-    <!-- Cursor personalizado -->
-    <div class="custom-cursor">
-        <span class="desktop-cursor">Scroll</span>
-        <span class="mobile-cursor">↓</span>
-    </div>
-
     <!-- Contenido principal -->
-    <main>
-        <!-- Sección Inicio -->
-        <section id="inicio" class="section active">
-            <div class="content-wrapper">
-                <small class="subtitle">Cuenta de Cobro</small>
-                <h1 class="main-title">Tuto</h1>
-                <div class="credits">
-                    <span>By: <a href="https://www.instagram.com/caracol.aventurero/" target="_blank" rel="noopener">Hinca</a></span>
+    <main class="sections">
+        <!-- Pantalla 1 -->
+        <section class="section active" id="section1">
+            <div class="section-content">
+                <div class="small-title">Cuenta de cobro</div>
+                <h1 class="main-title">TUTO</h1>
+                <div class="byline">by Felipe Hincapié & Palencia</div>
+            </div>
+        </section>
+        <!-- Pantalla 2 -->
+        <section class="section" id="section2">
+            <div class="section-content">
+                <div class="section-title">Descripción del servicio</div>
+                <div class="section-desc">
+                    Sesión de grabación audiovisual 5 horas<br>
+                    Equipos de grabación: Sony Alpha 6700 y Estabilizador Zhiyun Crane 3s
                 </div>
             </div>
         </section>
-
-        <!-- Sección Servicio -->
-        <section id="servicio" class="section">
-            <div class="content-wrapper">
-                <h2>Descripción del Servicio</h2>
-                <div class="service-details">
-                    <p>Sesión de grabación audiovisual 5 horas</p>
-                    <p>Equipos de grabación:</p>
-                    <ul>
-                        <li>Sony Alpha 6700</li>
-                        <li>Estabilizador Zhiyun Crane 3s</li>
-                    </ul>
-                    <div class="payment-info">
-                        <p><strong>Total a pagar:</strong> $[Valor]</p>
-                        <p><strong>Cuenta Nequi:</strong> 3022441587</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sección Nosotros -->
-        <section id="nosotros" class="section">
-            <div class="content-wrapper">
-                <h2>Sobre Nosotros</h2>
-                <div class="about-content">
-                    <h3>Felipe Hincapié Murillo</h3>
-                    <p>Comunicador audiovisual Universidad de Medellín</p>
-                    <p>Filmmaker, Desarrollador Web Junior</p>
-                    <div class="social-links">
-                        <a href="https://www.instagram.com/caracol.aventurero/" target="_blank" rel="noopener">
-                            @caracol.aventurero
-                        </a>
-                    </div>
+        <!-- Pantalla 3 -->
+        <section class="section" id="section3">
+            <div class="section-content">
+                <div class="section-title">Sobre nosotros</div>
+                <div class="section-desc">
+                    Felipe Hincapié Murillo<br>
+                    Comunicador audiovisual, Universidad de Medellín<br>
+                    Filmmaker, desarrollador web junior<br>
+                    <a href="https://www.instagram.com/caracol.aventurero/" target="_blank">@caracol.aventurero</a>
                 </div>
             </div>
         </section>
     </main>
+
+    <!-- Flecha para móvil -->
+    <div class="mobile-arrow" id="mobileArrow">
+        <span>&#8595;</span>
+    </div>
 
     <script src="script.js"></script>
 </body>
