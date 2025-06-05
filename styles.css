@@ -30,7 +30,6 @@ body {
     color: var(--text-color);
     overflow-x: hidden;
     line-height: 1.6;
-    cursor: none;
     min-height: 100vh;
     min-width: 100vw;
     position: relative;
@@ -469,5 +468,11 @@ footer {
     }
     .mobile-arrow {
         display: block;
+    }
+    body {
+        cursor: default !important;
+    }
+    .custom-cursor {
+        display: none !important;
     }
 } 

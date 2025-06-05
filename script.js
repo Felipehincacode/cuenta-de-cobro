@@ -258,4 +258,25 @@ setInterval(() => {
     heroTitle.style.animation = 'none';
     void heroTitle.offsetWidth; // Trigger reflow
     heroTitle.style.animation = null;
-}, 3000); 
+}, 3000);
+
+// --- CURSOR PERSONALIZADO DESKTOP ---
+const customCursor = document.querySelector('.custom-cursor');
+if (window.innerWidth >= 600 && customCursor) {
+    let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+    document.body.style.cursor = 'none';
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+    function animateCursor() {
+        cursorX += (mouseX - cursorX) * 0.18;
+        cursorY += (mouseY - cursorY) * 0.18;
+        customCursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
+        requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+} else if (customCursor) {
+    customCursor.style.display = 'none';
+    document.body.style.cursor = 'default';
+} 
