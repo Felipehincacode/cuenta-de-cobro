@@ -1,6 +1,6 @@
 // Three.js setup
 let scene, camera, renderer, particles;
-const particleCount = 1000; // Reduced particle count
+const particleCount = window.innerWidth <= 768 ? 500 : 1000; // Reduced particles for mobile
 
 function initThree() {
     scene = new THREE.Scene();
@@ -22,7 +22,7 @@ function initThree() {
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
     const material = new THREE.PointsMaterial({
-        size: 0.02, // Smaller particles
+        size: window.innerWidth <= 768 ? 0.01 : 0.02, // Smaller particles for mobile
         color: 0xffffff,
         transparent: true,
         opacity: 0.4
@@ -66,6 +66,38 @@ function updateTextRotation() {
     });
 }
 
+// Mobile touch handling
+let touchStartY = 0;
+let touchEndY = 0;
+let isScrolling = false;
+
+function handleTouchStart(event) {
+    touchStartY = event.touches[0].clientY;
+}
+
+function handleTouchMove(event) {
+    if (isScrolling) return;
+    
+    touchEndY = event.touches[0].clientY;
+    const diff = touchStartY - touchEndY;
+
+    if (Math.abs(diff) > 50) { // Minimum swipe distance
+        isScrolling = true;
+        
+        if (diff > 0 && currentSection < sections.length - 1) {
+            // Swipe up
+            updateSection(currentSection + 1);
+        } else if (diff < 0 && currentSection > 0) {
+            // Swipe down
+            updateSection(currentSection - 1);
+        }
+        
+        setTimeout(() => {
+            isScrolling = false;
+        }, 500);
+    }
+}
+
 // Scroll handling with reduced sensitivity
 let currentSection = 0;
 const sections = document.querySelectorAll('.section');
@@ -79,15 +111,20 @@ function updateSection(index) {
     sections[index].classList.add('active');
     navItems[index].classList.add('active');
     currentSection = index;
+    
+    // Update mobile arrow visibility
+    updateMobileArrow();
 }
 
 function handleScroll(event) {
+    if (window.innerWidth <= 768) return; // Disable wheel scroll on mobile
+    
     if (scrollTimeout) return;
     
     scrollTimeout = true;
     setTimeout(() => {
         scrollTimeout = false;
-    }, 500); // 500ms delay between scroll events
+    }, 500);
 
     if (event.deltaY > 0 && currentSection < sections.length - 1) {
         updateSection(currentSection + 1);
@@ -116,6 +153,13 @@ window.addEventListener('load', () => {
     initThree();
     animate();
     updateMobileArrow();
+    
+    // Add mobile touch events
+    if (window.innerWidth <= 768) {
+        document.body.classList.add('mobile-scroll-lock');
+        document.addEventListener('touchstart', handleTouchStart, { passive: true });
+        document.addEventListener('touchmove', handleTouchMove, { passive: true });
+    }
 });
 
 // Event listeners
@@ -130,4 +174,16 @@ window.addEventListener('resize', () => {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
     updateMobileArrow();
+    
+    // Update particle count and size on resize
+    if (particles) {
+        const newParticleCount = window.innerWidth <= 768 ? 500 : 1000;
+        const newSize = window.innerWidth <= 768 ? 0.01 : 0.02;
+        
+        particles.material.size = newSize;
+        // Recreate particles if count changed
+        if (newParticleCount !== particleCount) {
+            initThree();
+        }
+    }
 }); 
