@@ -111,7 +111,7 @@ window.addEventListener('resize', () => {
     }, 250);
 });
 
-// Three.js Setup for enhanced particles
+// --- PARTICULAS THREE.JS ---
 const canvasContainer = document.getElementById('particles-canvas');
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setClearColor(0x000000, 0);
@@ -122,17 +122,23 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 7;
 
+// Distribución esférica de partículas
 const particlesCount = 1200;
 const geometry = new THREE.BufferGeometry();
 const positions = new Float32Array(particlesCount * 3);
-for (let i = 0; i < particlesCount * 3; i++) {
-    positions[i] = (Math.random() - 0.5) * 16;
+const radius = 8;
+for (let i = 0; i < particlesCount; i++) {
+    const phi = Math.acos(-1 + (2 * i) / particlesCount);
+    const theta = Math.sqrt(particlesCount * Math.PI) * phi;
+    positions[i * 3] = radius * Math.cos(theta) * Math.sin(phi) + (Math.random() - 0.5) * 0.5;
+    positions[i * 3 + 1] = radius * Math.sin(theta) * Math.sin(phi) + (Math.random() - 0.5) * 0.5;
+    positions[i * 3 + 2] = radius * Math.cos(phi) + (Math.random() - 0.5) * 0.5;
 }
 geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
 const material = new THREE.PointsMaterial({
     color: 0xffffff,
-    size: 0.08,
+    size: 0.09,
     opacity: 0.7,
     transparent: true,
     blending: THREE.AdditiveBlending,
@@ -143,8 +149,8 @@ scene.add(points);
 
 function animateParticles() {
     requestAnimationFrame(animateParticles);
-    points.rotation.y += 0.0008;
-    points.rotation.x += 0.0003;
+    points.rotation.y += 0.0012;
+    points.rotation.x += 0.0007;
     renderer.render(scene, camera);
 }
 animateParticles();
@@ -210,6 +216,24 @@ window.addEventListener('wheel', (e) => {
 
 navDots.forEach((dot, i) => {
     dot.addEventListener('click', () => showSection(i));
+});
+
+// --- SCROLL POR TOUCH (MÓVIL) ---
+let touchStartY = null;
+window.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+        touchStartY = e.touches[0].clientY;
+    }
+});
+window.addEventListener('touchend', (e) => {
+    if (touchStartY === null) return;
+    const touchEndY = e.changedTouches[0].clientY;
+    const diff = touchStartY - touchEndY;
+    if (Math.abs(diff) > 40) {
+        if (diff > 0) scrollToSection(1);
+        else scrollToSection(-1);
+    }
+    touchStartY = null;
 });
 
 // --- FLECHA MÓVIL ---
