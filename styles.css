@@ -137,6 +137,7 @@ body {
     color: #ff6b35;
 }
 
+/* Byline */
 .byline {
     position: fixed;
     bottom: 2rem;
@@ -145,6 +146,12 @@ body {
     color: #fff;
     opacity: 0.8;
     z-index: 1000;
+    display: none; /* Hidden by default */
+}
+
+/* Show byline only in first section */
+#section1.active .byline {
+    display: block;
 }
 
 .section-title {
@@ -173,6 +180,7 @@ body {
     margin: 2rem auto;
     background: #fff;
     padding: 1rem;
+    display: block;
 }
 
 /* Equipment Images */
@@ -222,7 +230,7 @@ body {
 }
 
 /* Download Button */
-.download-btn {
+.download-btn, .contact-btn {
     display: inline-block;
     padding: 1rem 2rem;
     background: #ff6b35;
@@ -233,7 +241,7 @@ body {
     transition: all 0.3s ease;
 }
 
-.download-btn:hover {
+.download-btn:hover, .contact-btn:hover {
     background: #ff8c5a;
     transform: translateY(-2px);
 }
@@ -242,11 +250,24 @@ body {
 .payment-details {
     margin: 2rem 0;
     line-height: 2;
+    text-align: center;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .payment-label {
     color: #ff6b35;
     font-weight: 600;
+    display: inline-block;
+    min-width: 80px;
+    text-align: left;
+}
+
+.payment-value {
+    color: #fff;
+    display: inline-block;
+    text-align: left;
 }
 
 .download-container {
