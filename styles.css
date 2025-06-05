@@ -2,7 +2,6 @@
 :root {
     --text-color: #ffffff;
     --accent-color: rgba(255, 255, 255, 0.8);
-    --glow-color: rgba(255, 255, 255, 0.3);
 }
 
 /* Reset y estilos base */
@@ -48,7 +47,6 @@ body {
     height: 100vh;
     width: 100%;
     overflow: hidden;
-    background: #000;
 }
 
 #myVideo {
@@ -61,19 +59,7 @@ body {
     height: auto;
     z-index: 1;
     object-fit: cover;
-}
-
-/* Efecto de texto con video */
-.hero-title {
-    font-size: 4.5rem;
-    font-weight: 300;
-    text-transform: uppercase;
-    letter-spacing: 0.5em;
-    background: black;
-    mix-blend-mode: screen;
-    position: relative;
-    z-index: 3;
-    padding: 2rem;
+    opacity: 0.8;
 }
 
 .hero-content {
@@ -83,7 +69,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: black;
 }
 
 .slide-container {
@@ -110,15 +95,14 @@ body {
     transform: translateY(0);
 }
 
-/* Título y efectos de texto */
+/* Título */
 .hero-title {
     font-size: 4.5rem;
     font-weight: 300;
     color: var(--text-color);
     text-transform: uppercase;
     letter-spacing: 0.5em;
-    transform-style: preserve-3d;
-    transition: transform 0.3s ease;
+    mix-blend-mode: difference;
 }
 
 /* Créditos */
@@ -157,14 +141,12 @@ body {
     background-size: contain;
 }
 
-/* Contenido de slides */
+/* Contenido */
 .info-content,
 .service-content {
     color: var(--text-color);
     font-size: 1.1rem;
     text-align: center;
-    transform-style: preserve-3d;
-    transition: transform 0.3s ease;
     font-weight: 300;
     letter-spacing: 0.05em;
 }
@@ -214,7 +196,6 @@ body {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: brightness(1.1);
 }
 
 /* Botón de feedback */
