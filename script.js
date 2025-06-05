@@ -16,30 +16,32 @@ sr.reveal('.qr-section', { delay: 400 });
 sr.reveal('.feedback-section', { delay: 500 });
 sr.reveal('.footer', { delay: 600 });
 
-// Optimized cursor
-const cursor = document.querySelector('.custom-cursor');
-let cursorVisible = true;
-let cursorTimeout;
+// --- CURSOR PERSONALIZADO ---
+const customCursor = document.createElement('div');
+customCursor.classList.add('custom-cursor-element');
+customCursor.textContent = 'SCROLL';
+document.body.appendChild(customCursor);
+let cursorX = 0, cursorY = 0;
+let realX = 0, realY = 0;
 
-const updateCursor = (e) => {
-    cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-};
+function updateCustomCursor(e) {
+    cursorX = e.clientX;
+    cursorY = e.clientY;
+}
+document.addEventListener('mousemove', updateCustomCursor);
 
-// Throttled mousemove event
-document.addEventListener('mousemove', (e) => {
-    if (!cursorVisible) {
-        cursor.style.opacity = '1';
-        cursorVisible = true;
-    }
-    clearTimeout(cursorTimeout);
-    
-    requestAnimationFrame(() => updateCursor(e));
-    
-    cursorTimeout = setTimeout(() => {
-        cursor.style.opacity = '0';
-        cursorVisible = false;
-    }, 3000);
-});
+function animateCustomCursor() {
+    realX += (cursorX - realX) * 0.2;
+    realY += (cursorY - realY) * 0.2;
+    customCursor.style.left = realX + 'px';
+    customCursor.style.top = realY + 'px';
+    requestAnimationFrame(animateCustomCursor);
+}
+if (window.innerWidth >= 600) {
+    animateCustomCursor();
+} else {
+    customCursor.style.display = 'none';
+}
 
 // Control de slides optimizado
 const slides = document.querySelectorAll('.slide');
@@ -159,6 +161,11 @@ window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+    if (window.innerWidth < 600) {
+        customCursor.style.display = 'none';
+    } else {
+        customCursor.style.display = 'block';
+    }
 });
 
 // --- TEXTOS SIGUEN EL MOUSE ---
@@ -183,7 +190,7 @@ function animateTextTilt() {
 }
 animateTextTilt();
 
-// --- SCROLL Y SECCIONES ---
+// --- SCROLL Y SECCIONES (LÓGICA REVISADA) ---
 const sections = document.querySelectorAll('.section');
 const navDots = document.querySelectorAll('.nav-dot');
 let currentSection = 0;
@@ -199,23 +206,53 @@ function showSection(idx) {
 }
 
 function scrollToSection(dir) {
-    if (isScrolling) return;
-    isScrolling = true;
-    let next = currentSection + dir;
-    if (next < 0) next = 0;
-    if (next >= sections.length) next = sections.length - 1;
-    if (next !== currentSection) showSection(next);
-    setTimeout(() => { isScrolling = false; }, 900);
+    if (isScrolling) return; // Si una animación de scroll está en progreso, ignorar nuevos eventos
+
+    let nextSectionIndex = currentSection + dir;
+
+    // Asegurar que nextSectionIndex esté dentro de los límites [0, sections.length - 1]
+    if (nextSectionIndex < 0) {
+        nextSectionIndex = 0;
+    } else if (nextSectionIndex >= sections.length) {
+        nextSectionIndex = sections.length - 1;
+    }
+
+    // Solo proceder si realmente hay un cambio de sección
+    if (nextSectionIndex !== currentSection) {
+        isScrolling = true; // Establecer la bandera ya que iniciamos una animación de scroll
+        showSection(nextSectionIndex); // Actualizar a la nueva sección
+
+        // Resetear la bandera isScrolling después de la duración de la animación (más un pequeño buffer)
+        setTimeout(() => {
+            isScrolling = false;
+        }, 1000); // Coincide con la transición CSS (0.8s) + buffer
+    }
+    // Si nextSectionIndex es igual a currentSection (ej. en los límites), no hacer nada.
+    // isScrolling permanece como estaba (probablemente false, o true de un scroll anterior aún en timeout).
 }
 
 window.addEventListener('wheel', (e) => {
-    if (window.innerWidth < 600) return; // No scroll en móvil
-    if (e.deltaY > 0) scrollToSection(1);
-    else if (e.deltaY < 0) scrollToSection(-1);
-});
+    // Eliminada temporalmente la condición de ancho para el wheel en desktop para depuración.
+    // Permitir scroll con rueda independientemente del ancho de ventana en desktop.
+    // La condición !e.ctrlKey podría ser útil si quieres evitar el scroll de página cuando se hace zoom con Ctrl+rueda.
+    if (e.ctrlKey) return; // Si Ctrl está presionado (usualmente para zoom), no hacer scroll de página.
+
+    if (e.deltaY > 0) {
+        scrollToSection(1); // Scroll hacia abajo
+    } else if (e.deltaY < 0) {
+        scrollToSection(-1); // Scroll hacia arriba
+    }
+}, { passive: false }); // passive: false es por si se necesitara preventDefault, aunque aquí no se usa.
 
 navDots.forEach((dot, i) => {
-    dot.addEventListener('click', () => showSection(i));
+    dot.addEventListener('click', () => {
+        if (isScrolling || i === currentSection) return;
+        isScrolling = true;
+        showSection(i);
+        setTimeout(() => {
+            isScrolling = false;
+        }, 1000);
+    });
 });
 
 // --- SCROLL POR TOUCH (MÓVIL) ---
@@ -224,59 +261,37 @@ window.addEventListener('touchstart', (e) => {
     if (e.touches.length === 1) {
         touchStartY = e.touches[0].clientY;
     }
-});
+}, { passive: true });
 window.addEventListener('touchend', (e) => {
     if (touchStartY === null) return;
     const touchEndY = e.changedTouches[0].clientY;
     const diff = touchStartY - touchEndY;
-    if (Math.abs(diff) > 40) {
-        if (diff > 0) scrollToSection(1);
-        else scrollToSection(-1);
+    if (Math.abs(diff) > 40) { // Umbral de swipe
+        if (diff > 0) scrollToSection(1); // Swipe up
+        else scrollToSection(-1); // Swipe down
     }
     touchStartY = null;
 });
 
-// --- FLECHA MÓVIL ---
+// --- FLECHA MÓVIL Y CURSOR ---
 const mobileArrow = document.getElementById('mobileArrow');
-function handleMobileArrow() {
+function handleMobileArrowAndCursor() {
     if (window.innerWidth < 600) {
         mobileArrow.style.display = 'block';
+        if(customCursor) customCursor.style.display = 'none';
+        document.body.style.cursor = 'default'; // Mostrar cursor del sistema en móvil
     } else {
         mobileArrow.style.display = 'none';
+        if(customCursor) customCursor.style.display = 'block';
+        document.body.style.cursor = 'none'; // Ocultar cursor del sistema en desktop
     }
 }
-window.addEventListener('resize', handleMobileArrow);
-handleMobileArrow();
-
-// --- OCULTAR CURSOR EN MÓVIL ---
-if (window.innerWidth < 600) {
-    document.body.style.cursor = 'default';
-}
+window.addEventListener('resize', handleMobileArrowAndCursor);
+handleMobileArrowAndCursor(); // Llamada inicial
 
 // Glitch effect timing
 setInterval(() => {
     heroTitle.style.animation = 'none';
     void heroTitle.offsetWidth; // Trigger reflow
     heroTitle.style.animation = null;
-}, 3000);
-
-// --- CURSOR PERSONALIZADO DESKTOP ---
-const customCursor = document.querySelector('.custom-cursor');
-if (window.innerWidth >= 600 && customCursor) {
-    let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
-    document.body.style.cursor = 'none';
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
-    function animateCursor() {
-        cursorX += (mouseX - cursorX) * 0.18;
-        cursorY += (mouseY - cursorY) * 0.18;
-        customCursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
-        requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
-} else if (customCursor) {
-    customCursor.style.display = 'none';
-    document.body.style.cursor = 'default';
-} 
+}, 3000); 
