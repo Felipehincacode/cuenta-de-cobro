@@ -2,6 +2,8 @@
 :root {
     --text-color: #ffffff;
     --accent-color: rgba(255, 255, 255, 0.8);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --nav-height: 60px;
 }
 
 /* Reset y estilos base */
@@ -11,7 +13,7 @@
     box-sizing: border-box;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600&display=swap');
 
 body {
     font-family: 'Montserrat', sans-serif;
@@ -20,25 +22,244 @@ body {
     overflow-x: hidden;
     line-height: 1.6;
     cursor: none;
+    height: 100vh;
+    perspective: 1000px;
+}
+
+/* Borde del viewport */
+.viewport-border {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    border: 1px solid var(--border-color);
+    pointer-events: none;
+    z-index: 100;
+}
+
+/* Video de fondo */
+#bgVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -2;
+    object-fit: cover;
+}
+
+/* Contenedor de partículas */
+#particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Navegación */
+.main-nav {
+    position: fixed;
+    top: 40px;
+    right: 40px;
+    z-index: 100;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+.main-nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    opacity: 1;
 }
 
 /* Cursor personalizado */
 .custom-cursor {
-    width: 20px;
-    height: 20px;
-    background: transparent;
-    border: 1px solid var(--text-color);
-    border-radius: 50%;
     position: fixed;
     pointer-events: none;
     z-index: 9999;
+    mix-blend-mode: difference;
+}
+
+.desktop-cursor {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 8px;
-    color: var(--text-color);
+    width: 80px;
+    height: 80px;
+    border: 1px solid var(--text-color);
+    border-radius: 50%;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    mix-blend-mode: difference;
+    letter-spacing: 0.1em;
+}
+
+.mobile-cursor {
+    display: none;
+    font-size: 2rem;
+    animation: bounce 1s infinite;
+}
+
+/* Contenido principal */
+main {
+    height: 100vh;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+}
+
+.section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    scroll-snap-align: start;
+    position: relative;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.section.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.content-wrapper {
+    padding: 2rem;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease;
+}
+
+/* Textos */
+.subtitle {
+    font-size: 1rem;
+    font-weight: 200;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.main-title {
+    font-size: 6rem;
+    font-weight: 200;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+h2 {
+    font-size: 2.5rem;
+    font-weight: 200;
+    letter-spacing: 0.2em;
+    margin-bottom: 2rem;
+}
+
+/* Detalles del servicio */
+.service-details {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.service-details p,
+.service-details li {
+    margin-bottom: 1rem;
+    font-weight: 300;
+}
+
+.payment-info {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Sobre nosotros */
+.about-content {
+    text-align: center;
+}
+
+.about-content h3 {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+}
+
+.social-links {
+    margin-top: 2rem;
+}
+
+.social-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 300;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.social-links a:hover {
+    opacity: 1;
+}
+
+/* Animaciones */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .viewport-border {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+    }
+
+    .main-nav {
+        top: auto;
+        bottom: 30px;
+        right: 50%;
+        transform: translateX(50%);
+    }
+
+    .desktop-cursor {
+        display: none;
+    }
+
+    .mobile-cursor {
+        display: block;
+        position: fixed;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .main-title {
+        font-size: 3rem;
+        letter-spacing: 0.2em;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
 }
 
 /* Hero Section */
@@ -239,23 +460,4 @@ footer {
 .creator a {
     color: var(--text-color);
     text-decoration: none;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 2.5rem;
-        letter-spacing: 0.3em;
-    }
-
-    .credits {
-        font-size: 0.9rem;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .info-content,
-    .service-content {
-        font-size: 1rem;
-    }
 } 

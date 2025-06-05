@@ -3,80 +3,90 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Cuenta de Cobro - Felipe Hincapié</title>
+    <title>Cuenta de Cobro - Tuto</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://unpkg.com/scrollreveal"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
 <body>
-    <!-- Cursor personalizado -->
-    <div class="custom-cursor">Scroll</div>
+    <!-- Borde del viewport -->
+    <div class="viewport-border"></div>
 
-    <!-- Hero Section con video -->
-    <div class="hero">
-        <video autoplay muted loop playsinline id="myVideo">
-            <source src="assets/video/background.mp4" type="video/mp4">
-            Tu navegador no soporta videos HTML5.
-        </video>
-        <div class="grain-overlay"></div>
-        <div class="hero-content">
-            <div class="slide-container">
-                <div class="slide" id="slide1">
-                    <h1 class="hero-title">Cuenta de Cobro</h1>
-                    <div class="credits">
-                        <span><a href="https://www.instagram.com/pale.enhd/" target="_blank" rel="noopener">Palencia <i class="instagram-icon"></i></a></span>
-                        <span><a href="https://www.instagram.com/caracol.aventurero/" target="_blank" rel="noopener">Hinca <i class="instagram-icon"></i></a></span>
-                    </div>
+    <!-- Video de fondo -->
+    <video autoplay muted loop playsinline id="bgVideo">
+        <source src="assets/video/background.mp4" type="video/mp4">
+    </video>
+
+    <!-- Partículas Three.js -->
+    <div id="particles-container"></div>
+
+    <!-- Navegación -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="#inicio" class="active">Inicio</a></li>
+            <li><a href="#servicio">Servicio</a></li>
+            <li><a href="#nosotros">Nosotros</a></li>
+        </ul>
+    </nav>
+
+    <!-- Cursor personalizado -->
+    <div class="custom-cursor">
+        <span class="desktop-cursor">Scroll</span>
+        <span class="mobile-cursor">↓</span>
+    </div>
+
+    <!-- Contenido principal -->
+    <main>
+        <!-- Sección Inicio -->
+        <section id="inicio" class="section active">
+            <div class="content-wrapper">
+                <small class="subtitle">Cuenta de Cobro</small>
+                <h1 class="main-title">Tuto</h1>
+                <div class="credits">
+                    <span>By: <a href="https://www.instagram.com/caracol.aventurero/" target="_blank" rel="noopener">Hinca</a></span>
                 </div>
-                <div class="slide" id="slide2">
-                    <div class="info-content">
-                        <div><strong>Emitido por:</strong> Felipe Hincapié Murillo</div>
-                        <div><strong>C.C.:</strong> 1020493388</div>
-                        <div><strong>Email:</strong> fotopipets@gmail.com</div>
-                    </div>
-                </div>
-                <div class="slide" id="slide3">
-                    <div class="service-content">
-                        <div><strong>Cliente:</strong> Tuto</div>
-                        <div><strong>Servicio:</strong> Registro de video en zona de La Alpujarra, Medellín</div>
-                        <div><strong>Fecha del servicio:</strong> [Agrega aquí la fecha que fue]</div>
-                        <div><strong>Incluye:</strong> Transporte</div>
-                        <div class="price-tag"><strong>Total a pagar:</strong> $[Especifica el valor acordado]</div>
-                        <div><strong>Fecha de cobro:</strong> 5 de junio de 2025</div>
+            </div>
+        </section>
+
+        <!-- Sección Servicio -->
+        <section id="servicio" class="section">
+            <div class="content-wrapper">
+                <h2>Descripción del Servicio</h2>
+                <div class="service-details">
+                    <p>Sesión de grabación audiovisual 5 horas</p>
+                    <p>Equipos de grabación:</p>
+                    <ul>
+                        <li>Sony Alpha 6700</li>
+                        <li>Estabilizador Zhiyun Crane 3s</li>
+                    </ul>
+                    <div class="payment-info">
+                        <p><strong>Total a pagar:</strong> $[Valor]</p>
+                        <p><strong>Cuenta Nequi:</strong> 3022441587</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- Sección de pago -->
-    <div class="payment-section">
-        <div class="bank-info">
-            <div><strong>Cuenta de ahorros Nequi:</strong> 3022441587</div>
-            <div><strong>A nombre de:</strong> Felipe Hincapié</div>
-        </div>
-        <div class="qr-container">
-            <img src="assets/images/qr-code.png" alt="Código QR para pago" loading="lazy">
-        </div>
-        <a href="https://forms.gle/your-form-link" class="feedback-button" target="_blank" rel="noopener">
-            <span>Danos tu opinión</span>
-        </a>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <div class="disclaimer">
-            Este documento no es una factura oficial con IVA. No aplica retenciones. 
-            Solo aplica como soporte para cobro de servicios.
-        </div>
-        <div class="creator">
-            Diseñado y desarrollado por <a href="https://www.instagram.com/pale.enhd/" target="_blank" rel="noopener">Felipe Hincapié</a>
-        </div>
-    </footer>
+        <!-- Sección Nosotros -->
+        <section id="nosotros" class="section">
+            <div class="content-wrapper">
+                <h2>Sobre Nosotros</h2>
+                <div class="about-content">
+                    <h3>Felipe Hincapié Murillo</h3>
+                    <p>Comunicador audiovisual Universidad de Medellín</p>
+                    <p>Filmmaker, Desarrollador Web Junior</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/caracol.aventurero/" target="_blank" rel="noopener">
+                            @caracol.aventurero
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>
