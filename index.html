@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
@@ -30,10 +30,10 @@
     <!-- Navbar -->
     <nav class="navbar">
         <ul>
-            <li class="nav-dot active" data-section="section1"></li>
-            <li class="nav-dot" data-section="section2"></li>
-            <li class="nav-dot" data-section="section3"></li>
-            <li class="nav-dot" data-section="section4"></li>
+            <li class="nav-item active" data-section="section1">Inicio</li>
+            <li class="nav-item" data-section="section2">Servicio</li>
+            <li class="nav-item" data-section="section3">Pago</li>
+            <li class="nav-item" data-section="section4">Contacto</li>
         </ul>
     </nav>
 
@@ -52,10 +52,11 @@
         <section class="section" id="section2">
             <div class="section-content">
                 <div class="section-title">Descripción del servicio</div>
-                <img src="https://placehold.co/180x120?text=Cámara" alt="Cámara" class="section-img">
                 <div class="section-desc">
-                    Sesión de grabación audiovisual 5 horas<br>
-                    Equipos de grabación: Sony Alpha 6700 y Estabilizador Zhiyun Crane 3s
+                    Grabación audiovisual por 4 horas<br>
+                    <br>
+                    Equipos:<br>
+                    Sony a6700 y Crane3s
                 </div>
             </div>
         </section>
@@ -66,23 +67,25 @@
                 <div class="section-title">Pago por Nequi</div>
                 <img src="https://placehold.co/200x200?text=QR" alt="QR Code" class="section-img qr-code">
                 <div class="section-desc">
-                    Escanea el código QR para pagar<br>
-                    o envía el pago a: 3001234567
+                    Banco: Nequi<br>
+                    Titular: Felipe Hincapié Murillo<br>
+                    CC: 102049338
                 </div>
             </div>
         </section>
 
-        <!-- Pantalla 4: Detalles -->
+        <!-- Pantalla 4: Contacto -->
         <section class="section" id="section4">
             <div class="section-content">
-                <div class="section-title">Detalles de facturación</div>
+                <div class="section-title">Contacto</div>
                 <div class="section-desc">
-                    <p>Emitido por: Felipe Hincapié Murillo</p>
-                    <p>C.C.: 1020493388</p>
-                    <p>Correo: fotopipets@gmail.com</p>
-                    <p>Servicio: Registro de video en zona de La Alpujarra, Medellín</p>
-                    <p>Fecha del servicio: 5 de junio de 2025</p>
-                    <p>Valor total a pagar: 400 cop</p>
+                    ¿Tienes dudas o comentarios?<br>
+                    ¡Nos encantaría escucharte!
+                </div>
+                <a href="#" class="contact-btn">Enviar mensaje</a>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/caracol.aventurero/" target="_blank">@caracol.aventurero</a>
+                    <a href="https://www.instagram.com/pale.enhd/" target="_blank">@pale.enhd</a>
                 </div>
             </div>
         </section>

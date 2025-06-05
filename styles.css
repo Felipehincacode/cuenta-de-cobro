@@ -45,8 +45,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    border: 2vw solid rgba(255, 255, 255, 1);
-    border-radius: 20px;
+    border: 1vw solid rgba(255, 255, 255, 1);
     pointer-events: none;
     z-index: 100;
 }
@@ -70,19 +69,19 @@ body {
     z-index: 1000;
 }
 
-.nav-dot {
-    width: 12px;
-    height: 12px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
+.nav-item {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
     margin: 15px 0;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.nav-dot.active {
-    background: #fff;
-    transform: scale(1.2);
+.nav-item.active {
+    color: #fff;
+    transform: translateX(-10px);
 }
 
 /* Sections */
@@ -113,7 +112,7 @@ body {
 
 .section-content {
     text-align: center;
-    max-width: 800px;
+    max-width: 1000px;
     padding: 0 20px;
     transform-style: preserve-3d;
     perspective: 1000px;
@@ -121,36 +120,84 @@ body {
 
 /* Typography */
 .small-title {
-    font-size: 1.2rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
     margin-bottom: 1rem;
-    opacity: 0.8;
+    color: #ff6b35;
 }
 
 .main-title {
-    font-size: 5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 7rem;
     font-weight: 700;
     margin-bottom: 1rem;
     text-transform: uppercase;
+    color: #fff;
 }
 
 .byline {
     font-size: 1.2rem;
-    opacity: 0.8;
+    color: #ff6b35;
 }
 
 .section-title {
-    font-size: 2.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
     margin-bottom: 2rem;
+    color: #ff6b35;
 }
 
 .section-desc {
-    font-size: 1.2rem;
-    line-height: 1.6;
+    font-size: 1.4rem;
+    line-height: 1.8;
+    color: #fff;
 }
 
 .section-img {
     max-width: 100%;
     height: auto;
+}
+
+/* QR Code */
+.qr-code {
+    width: 200px;
+    height: 200px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 1rem;
+}
+
+/* Contact Form Button */
+.contact-btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: #ff6b35;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 2rem;
+    transition: all 0.3s ease;
+}
+
+.contact-btn:hover {
+    background: #ff8c5a;
+    transform: translateY(-2px);
+}
+
+/* Social Links */
+.social-links {
+    margin-top: 2rem;
+}
+
+.social-links a {
+    color: #ff6b35;
+    margin: 0 1rem;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #ff8c5a;
 }
 
 /* Mobile arrow */
@@ -180,15 +227,19 @@ body {
 /* Mobile styles */
 @media (max-width: 768px) {
     .viewport-border {
-        border-width: 3vw;
+        border-width: 1vw;
     }
 
     .main-title {
-        font-size: 3rem;
+        font-size: 4rem;
     }
 
     .section-title {
         font-size: 2rem;
+    }
+
+    .section-desc {
+        font-size: 1.2rem;
     }
 
     .mobile-arrow {
@@ -198,27 +249,4 @@ body {
     .navbar {
         right: 3vw;
     }
-}
-
-/* Links */
-a {
-    color: #fff;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    transition: border-color 0.3s ease;
-}
-
-a:hover {
-    border-color: #fff;
-}
-
-/* QR Code */
-.qr-code {
-    width: 200px;
-    height: 200px;
-    margin: 2rem auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    background: #fff;
-    padding: 1rem;
 } 

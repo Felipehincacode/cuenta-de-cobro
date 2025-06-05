@@ -1,6 +1,6 @@
 // Three.js setup
 let scene, camera, renderer, particles;
-const particleCount = 2000;
+const particleCount = 1000; // Reduced particle count
 
 function initThree() {
     scene = new THREE.Scene();
@@ -22,10 +22,10 @@ function initThree() {
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
     const material = new THREE.PointsMaterial({
-        size: 0.05,
+        size: 0.02, // Smaller particles
         color: 0xffffff,
         transparent: true,
-        opacity: 0.6
+        opacity: 0.4
     });
 
     particles = new THREE.Points(geometry, material);
@@ -37,45 +37,58 @@ function initThree() {
 function animate() {
     requestAnimationFrame(animate);
     
-    particles.rotation.x += 0.0005;
-    particles.rotation.y += 0.0005;
+    // Update particle positions based on mouse
+    const positions = particles.geometry.attributes.position.array;
+    for (let i = 0; i < positions.length; i += 3) {
+        positions[i] += (mouseX * 0.0001);
+        positions[i + 1] += (mouseY * 0.0001);
+    }
+    particles.geometry.attributes.position.needsUpdate = true;
     
     renderer.render(scene, camera);
 }
 
-// Mouse tracking for text rotation
+// Mouse tracking for text rotation and particles
 let mouseX = 0;
 let mouseY = 0;
 
 function updateMousePosition(event) {
-    mouseX = (event.clientX - window.innerWidth / 2) / 100;
-    mouseY = (event.clientY - window.innerHeight / 2) / 100;
+    mouseX = (event.clientX - window.innerWidth / 2);
+    mouseY = (event.clientY - window.innerHeight / 2);
 }
 
 function updateTextRotation() {
     const contents = document.querySelectorAll('.section-content');
     contents.forEach(content => {
         if (content.parentElement.classList.contains('active')) {
-            content.style.transform = `rotateX(${mouseY}deg) rotateY(${mouseX}deg)`;
+            content.style.transform = `rotateX(${mouseY * 0.0001}deg) rotateY(${mouseX * 0.0001}deg)`;
         }
     });
 }
 
-// Scroll handling
+// Scroll handling with reduced sensitivity
 let currentSection = 0;
 const sections = document.querySelectorAll('.section');
-const navDots = document.querySelectorAll('.nav-dot');
+const navItems = document.querySelectorAll('.nav-item');
+let scrollTimeout = false;
 
 function updateSection(index) {
     sections.forEach(section => section.classList.remove('active'));
-    navDots.forEach(dot => dot.classList.remove('active'));
+    navItems.forEach(item => item.classList.remove('active'));
     
     sections[index].classList.add('active');
-    navDots[index].classList.add('active');
+    navItems[index].classList.add('active');
     currentSection = index;
 }
 
 function handleScroll(event) {
+    if (scrollTimeout) return;
+    
+    scrollTimeout = true;
+    setTimeout(() => {
+        scrollTimeout = false;
+    }, 500); // 500ms delay between scroll events
+
     if (event.deltaY > 0 && currentSection < sections.length - 1) {
         updateSection(currentSection + 1);
     } else if (event.deltaY < 0 && currentSection > 0) {
@@ -93,9 +106,9 @@ function updateMobileArrow() {
     }
 }
 
-// Navigation dots click handling
-navDots.forEach((dot, index) => {
-    dot.addEventListener('click', () => updateSection(index));
+// Navigation items click handling
+navItems.forEach((item, index) => {
+    item.addEventListener('click', () => updateSection(index));
 });
 
 // Initialize
