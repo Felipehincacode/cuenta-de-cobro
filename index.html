@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
@@ -75,14 +76,16 @@
             <div class="section-content">
                 <div class="section-title">Pago por Nequi</div>
                 <img src="https://placehold.co/200x200?text=QR" alt="QR Code" class="section-img qr-code">
-                <div class="section-desc">
-                    Banco: Nequi<br>
-                    Titular: Felipe Hincapié Murillo<br>
-                    CC: 102049338
+                <div class="section-desc payment-details">
+                    <span class="payment-label">Banco:</span> Nequi<br>
+                    <span class="payment-label">Titular:</span> Felipe Hincapié Murillo<br>
+                    <span class="payment-label">CC:</span> 102049338
                 </div>
-                <a href="assets/Factura_cobro.pdf" class="download-btn" download>
-                    Descargar cuenta de cobro
-                </a>
+                <div class="download-container">
+                    <a href="assets/Factura_cobro.pdf" class="download-btn" download>
+                        Descargar cuenta de cobro
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -100,11 +103,11 @@
                 </a>
                 <div class="social-links">
                     <a href="https://www.instagram.com/caracol.aventurero/" target="_blank" class="social-btn">
-                        <img src="assets/images/instagram.png" alt="Instagram">
+                        <i class="bi bi-instagram"></i>
                         @caracol.aventurero
                     </a>
                     <a href="https://www.instagram.com/pale.enhd/" target="_blank" class="social-btn">
-                        <img src="assets/images/instagram.png" alt="Instagram">
+                        <i class="bi bi-instagram"></i>
                         @pale.enhd
                     </a>
                 </div>

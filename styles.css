@@ -238,6 +238,23 @@ body {
     transform: translateY(-2px);
 }
 
+/* Payment section styles */
+.payment-details {
+    margin: 2rem 0;
+    line-height: 2;
+}
+
+.payment-label {
+    color: #ff6b35;
+    font-weight: 600;
+}
+
+.download-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
 /* Social Links */
 .social-links {
     margin-top: 2rem;
@@ -263,9 +280,8 @@ body {
     transform: translateY(-2px);
 }
 
-.social-btn img {
-    width: 24px;
-    height: 24px;
+.social-btn i {
+    font-size: 1.2rem;
 }
 
 /* Mobile arrow */
@@ -295,7 +311,7 @@ body {
 /* Mobile styles */
 @media (max-width: 768px) {
     .viewport-border {
-        border-width: 1vw;
+        display: none; /* Remove borders on mobile */
     }
 
     .main-title {
@@ -362,6 +378,14 @@ body {
     .equipment-item {
         width: 150px;
         height: 120px;
+    }
+
+    /* Show equipment names always on mobile */
+    .equipment-name {
+        opacity: 1;
+        bottom: -1.5rem;
+        font-size: 0.9rem;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
     }
 
     .social-links {
